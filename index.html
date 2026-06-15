@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>배달 디톡스 (Delivery Detox)</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="진짜 배달을 막는 것이 아니라, 배달 욕구를 대체하는 경험. 배달 디톡스로 오늘 하루 배달비를 아끼고 건강한 성취감을 느껴보세요.">
+  <meta name="theme-color" content="#10b981">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  
+  <!-- Pretendard Font -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- App Wrapper for Mobile Frame -->
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-logo">
+        <span class="logo-icon">🛡️</span>
+        <h1 class="logo-text">배달 디톡스</h1>
+      </div>
+      <div class="header-status" id="header-status">디톡스 대기 중</div>
+    </header>
+
+    <!-- MAIN VIEWS -->
+    <main class="app-main">
+
+      <!-- SCREEN 1: HOME -->
+      <section id="view-home" class="app-view active">
+        <div class="hero-section">
+          <div class="bubble">오늘 배달 안 하기 🔥</div>
+          <h2 class="hero-title">내 지갑과 건강을 지키는<br><span class="highlight">가짜 주문 경험</span></h2>
+        </div>
+
+        <!-- Dashboard Stats Card -->
+        <div class="stats-card">
+          <div class="stats-header">
+            <span class="card-title">🛡️ 나의 디톡스 현황</span>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-icon">💰</div>
+              <div class="stat-info">
+                <span class="stat-label">현재 절약금액</span>
+                <span class="stat-value" id="home-saved-money">0원</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">🔥</div>
+              <div class="stat-info">
+                <span class="stat-label">연속 성공일</span>
+                <span class="stat-value" id="home-streak">0일</span>
+              </div>
+            </div>
+          </div>
+          <div class="stats-footer">
+            <div class="footer-stat">
+              <span>오늘 가짜 주문 횟수:</span>
+              <strong id="home-today-orders">0회</strong>
+            </div>
+            <div class="footer-stat">
+              <span>누적 성공 횟수:</span>
+              <strong id="home-total-success">0회</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-section">
+          <p class="action-desc">배달앱을 켜고 싶으신가요?<br>지금 진짜 배달 대신 가짜 배달 주문을 시작해보세요.</p>
+          <button id="btn-start-detox" class="btn btn-primary btn-large ripple">배달 시작</button>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: MENU EXPLORATION -->
+      <section id="view-menu" class="app-view">
+        <div class="view-header">
+          <button id="btn-menu-back" class="btn-back" aria-label="이전 화면으로 이동">←</button>
+          <h2>먹고 싶은 음식 선택</h2>
+        </div>
+
+        <!-- Category Tabs -->
+        <nav class="category-tabs" id="category-tabs" aria-label="음식 카테고리">
+          <!-- Dynamically populated -->
+        </nav>
+
+        <!-- Search Bar -->
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="food-search" placeholder="먹고 싶은 메뉴를 찾아보세요">
+        </div>
+
+        <!-- Food List -->
+        <div class="food-list" id="food-list">
+          <!-- Dynamically populated from CSV -->
+        </div>
+      </section>
+
+      <!-- SCREEN 3: ORDER COMPLETED -->
+      <section id="view-order-success" class="app-view">
+        <div class="success-banner">
+          <div class="success-check-anim">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+          </div>
+          <h2 class="success-title">주문이 접수되었습니다!</h2>
+          <p class="success-desc">배달이 곧 시작됩니다. 마음을 비우고 기다려보세요.</p>
+        </div>
+
+        <!-- Order Detail Summary -->
+        <div class="order-summary-card">
+          <h3>주문 내역</h3>
+          <div class="summary-row">
+            <span class="summary-label">주문 메뉴</span>
+            <span class="summary-val" id="success-menu-name">-</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">아낀 금액 (결제금액)</span>
+            <span class="summary-val highlight" id="success-menu-price">0원</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">결제 수단</span>
+            <span class="summary-val">가짜 머니 🪙</span>
+          </div>
+        </div>
+
+        <button id="btn-view-delivery" class="btn btn-primary btn-large">배달 현황 보기</button>
+      </section>
+
+      <!-- SCREEN 4: FAKE DELIVERY PROGRESS -->
+      <section id="view-delivery" class="app-view">
+        <div class="delivery-status-header">
+          <span class="badge badge-ongoing">실시간 배달 중</span>
+          <h2 id="delivery-stage-text">사장님이 주문을 확인했습니다</h2>
+        </div>
+
+        <!-- Simulated Delivery Map / Animation Area -->
+        <div class="delivery-visualizer">
+          <!-- Interactive map mock illustration -->
+          <div class="map-bg">
+            <div class="road-path"></div>
+            <div class="rider-icon" id="rider-icon">🛵</div>
+            <div class="house-icon">🏠</div>
+            <div class="store-icon">🏪</div>
+          </div>
+          
+          <!-- Countdown Circular Progress -->
+          <div class="timer-container">
+            <svg class="progress-ring" width="120" height="120">
+              <circle class="progress-ring__circle-bg" stroke="#1f2937" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+              <circle class="progress-ring__circle" id="timer-progress" stroke="#10b981" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+            </svg>
+            <div class="timer-text" id="timer-display">00:00</div>
+          </div>
+        </div>
+
+        <!-- Timelines (4 Steps) -->
+        <div class="delivery-timeline">
+          <div class="timeline-step" id="step-1">
+            <div class="step-marker">1</div>
+            <div class="step-content">
+              <h4>주문 확인 완료</h4>
+              <p>사장님이 주문을 수락했습니다 (30초)</p>
+            </div>
+          </div>
+          <div class="timeline-step" id="step-2">
+            <div class="step-marker">2</div>
+            <div class="step-content">
+              <h4>음식 조리 중</h4>
+              <p>맛있게 음식을 조리하고 있습니다 (45초)</p>
+            </div>
+          </div>
+          <div class="timeline-step" id="step-3">
+            <div class="step-marker">3</div>
+            <div class="step-content">
+              <h4>배달원 픽업</h4>
+              <p>배달 라이더가 주소를 확인하고 픽업했습니다 (60초)</p>
+            </div>
+          </div>
+          <div class="timeline-step" id="step-4">
+            <div class="step-marker">4</div>
+            <div class="step-content">
+              <h4>곧 도착 예정</h4>
+              <p>배달지가 인접해 있습니다 (30초)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Speed control tool for grading/testing -->
+        <div class="developer-panel">
+          <label class="toggle-switch">
+            <input type="checkbox" id="chk-fast-mode">
+            <span class="slider"></span>
+          </label>
+          <span class="dev-label">⚡ 테스트 배속 (10배 빠른 진행)</span>
+        </div>
+      </section>
+
+      <!-- SCREEN 5: PSYCHOLOGICAL REWARD -->
+      <section id="view-reward" class="app-view">
+        <div class="reward-celebration">
+          <div class="trophy-badge">🎉</div>
+          <h2>배달 디톡스 성공!</h2>
+          <p class="reward-congrats">축하합니다! 배달 유혹을 이겨내고<br><strong id="reward-saved-session" class="highlight-green">23,000원</strong>을 절약하셨습니다!</p>
+        </div>
+
+        <!-- Reward Stat Box -->
+        <div class="reward-stats-box">
+          <div class="rew-stat">
+            <span class="rew-label">오늘까지 총 절약금액</span>
+            <span class="rew-val" id="reward-total-saved">0원</span>
+          </div>
+          <div class="rew-stat">
+            <span class="rew-label">연속 성공일</span>
+            <span class="rew-val" id="reward-streak">0일</span>
+          </div>
+        </div>
+
+        <!-- User Craving Feedback Survey (MVP Core Metric) -->
+        <form id="survey-form" class="survey-card">
+          <legend class="survey-title">📊 배달 디톡스 효과 측정</legend>
+          <p class="survey-question">가짜 주문 과정을 겪은 후,<br><strong>지금도 진짜 배달 음식을 주문하고 싶으신가요?</strong></p>
+          
+          <div class="survey-options">
+            <label class="survey-option-label">
+              <input type="radio" name="crave" value="yes" required>
+              <span class="custom-radio"></span>
+              <span class="option-text">예 (여전히 욕구가 강함)</span>
+            </label>
+            <label class="survey-option-label">
+              <input type="radio" name="crave" value="no">
+              <span class="custom-radio"></span>
+              <span class="option-text">아니오 (배달 주문 욕구가 줄어듦)</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-success btn-large">설문 완료 및 저장</button>
+        </form>
+      </section>
+
+    </main>
+
+    <!-- FOOTER NAV -->
+    <footer class="app-footer">
+      <p class="footer-note">이 앱은 배달 욕구를 물리치는 시뮬레이션용 앱입니다.</p>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

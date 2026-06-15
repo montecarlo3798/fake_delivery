@@ -1,0 +1,21 @@
+{
+  "name": "배달 디톡스 (Delivery Detox)",
+  "short_name": "배달디톡스",
+  "description": "배달 욕구를 대체하여 건강한 생활 습관을 기릅니다.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#121826",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
